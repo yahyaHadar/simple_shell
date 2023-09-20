@@ -10,7 +10,7 @@
 
 int noha_myenv(noha_info_t *info)
 {
-	noha_print_list_str(info->noha_env);
+	noha_print_list_str(info->env);
 	return 0;
 }
 
@@ -25,12 +25,12 @@ int noha_myenv(noha_info_t *info)
 
 char *noha_getenv(noha_info_t *info, const char *name)
 {
-	list_t *node = info->noha_env;
+	list_t *node = info->env;
 	char *p;
 
 	while (node)
 	{
-		p = noha_starts_with(node->str, name);
+		p = noha_starts_with(node->str_value, name);
 		if (p && *p)
 			return p;
 		node = node->next;
@@ -74,7 +74,7 @@ int noha_myunsetenv(noha_info_t *info)
 		noha_eputs("theres just few arguments\n");
 		return 1;
 	}
-	for (i = 1; i <= info->argc; i++)
+	for (i = 1; i < info->argc; i++)
 		noha_unstenv(info, info->argv[i]);
 
 	return 0;
@@ -93,8 +93,8 @@ int noha_populate_env_list(noha_info_t *info)
 	list_t *node = NULL;
 	size_t i;
 
-	for (i = 0; noha_environ[i]; i++)
-		 noha_add_node_end(&node, noha_environ[i], 0);
-	info->noha_env = node;
+	for (i = 0; info->environ[i]; i++)
+		 noha_add_node_end(&node, info->environ[i], 0);
+	info->env = node;
 	return 0;
 }
