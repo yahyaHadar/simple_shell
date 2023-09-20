@@ -17,7 +17,7 @@ void noha_eputs(char *string)
 
 	while (string[index] != '\0')
 	{
-		noha_eputs(string[index]);
+		noha_eputs(string);
 		index++;
 	}
 }
@@ -72,7 +72,7 @@ int noha_putfd(char c, int fd)
 /**
  * noha_putsfd - print input string to file that given
  *
- * @string: string that will be printed
+ * @str: string that will be printed
  * @fd: file desc to be writed to
  *
  * Return: number of characters put
@@ -87,7 +87,7 @@ int noha_putsfd(char *str, int fd)
 
 	while (*str)
 	{
-		index += noha_putsfd(*str++, fd);
+		index += noha_putsfd(str++, fd);
 	}
 
 	return (index);

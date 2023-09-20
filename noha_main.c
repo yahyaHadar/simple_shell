@@ -12,7 +12,7 @@
 
 int noha_main(int argc, char **argv)
 {
-	noha_info_t info[] = {NOHA_INFO_INIT};
+	noha_info_t info[] = NOHA_INFO_INIT;
 	int file_descriptor = 2;
 
 
@@ -31,7 +31,7 @@ int noha_main(int argc, char **argv)
 			if (errno == ENOENT)
 			{
 				noha_eputs(argv[0]);
-				noha_eputs(": 0: Can't open ");
+				noha_eputs(": 0: this file can't open ");
 				noha_eputs(argv[1]);
 				noha_eputchar('\n');
 				noha_eputchar(NOHA_BUF_FLUSH);

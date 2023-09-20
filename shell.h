@@ -219,4 +219,16 @@ void noha_clear_info(noha_info_t *);
 void noha_set_info(noha_info_t *, char **);
 void noha_free_info(noha_info_t *, int);
 
+/*noha_env.c module*/
+char *noha_getenv(noha_info_t *, const char *);
+int noha_myenv(noha_info_t *);
+int noha_mysetenv(noha_info_t *);
+int noha_myunsetenv(noha_info_t *);
+int noha_populate_env_list(noha_info_t *);
+
+/* noha_env2.c module */
+char **noha_environ(noha_info_t *);
+int noha_unsetenv(noha_info_t *, char *);
+int noha_setenv(noha_info_t *, char *, char *);
+
 #endif

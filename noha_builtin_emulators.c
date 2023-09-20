@@ -65,13 +65,13 @@ int noha_mycd(noha_info_t *info)
 			return (1);
 		}
 		noha_puts(noha_getenv(info, "OLDPWD=")), noha_putchar('\n');
-		chd_dir = /* TODO: what do you mean by this? */
+		chdir = /* TODO: what do you mean by this? */
 			chdir((new_dir = noha_getenv(info, "OLDPWD="))
 					? new_dir : "/");
 	}
 	else
 		chd_ret = chdir(info->argv[1]);
-	if (chdir_ret == -1)
+	if (chd_ret == -1)
 	{
 		noha_print_error(info, "fail cd to ");
 		noha_eputs(info->argv[1]), noha_eputchar('\n');
