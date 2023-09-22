@@ -31,6 +31,7 @@ int main(int argc, char **argv)
 		idx++;
 		command = tokenizer(line);
 
+
 		if (!command)
 		{
 			continue;
@@ -45,3 +46,4 @@ int main(int argc, char **argv)
 		}
 	}
 }
+
