@@ -12,21 +12,6 @@
 #include <fcntl.h>
 #include <errno.h>
 
-/*read and write buffers*/
-#define NOHA_READ_BUF_SIZE 1024
-#define NOHA_WRITE_BUF_SIZE 1024
-#define NOHA_BUF_FLUSH -1
-
-/*command chining*/
-#define NOHA_CMD_NORM   0
-#define NOHA_CMD_OR     1
-#define NOHA_CMD_AND    2
-#define NOHA_CMD_CHAIN  3
-
-/*convert_number()*/
-#define NOHA_CONVERT_LOWERCASE  1
-#define NOHA_CONVERT_UNSIGNED   2
-
 #define DELIM " \t\n"
 
 extern char **environ;
@@ -69,4 +54,4 @@ void handle_builtin(char **command, char **argv, int *status, int idx);
 void exit_shell(char **command, char **argv, int *status, int idx);
 void print_env(char **command, int *status);
 
-#endif
+#endif /* SHEEL_H */
