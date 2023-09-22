@@ -26,8 +26,6 @@ int main(int argc, char **argv)
 			{
 				write(STDOUT_FILENO, "\n ", 1);
 			}
-			free(line);
-			freearay(command);
 			return (status);
 		}
 		idx++;
@@ -35,7 +33,6 @@ int main(int argc, char **argv)
 
 		if (!command)
 		{
-			free(line);
 			continue;
 		}
 		if (is_builtin(command[0]))
@@ -46,8 +43,5 @@ int main(int argc, char **argv)
 		{
 			status = _execute(command, argv, idx);
 		}
-		freearay(command);
 	}
-	return 0;
-
 }
