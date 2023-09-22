@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * is_builtin - function built
+ * is_builtin - where the function is built
  *
  * @command: the command
  *
@@ -24,7 +24,7 @@ int is_builtin(char *command)
 }
 
 /**
- * handle_builtin - a function to hand builting
+ * handle_builtin - a function to handle the builting
  *
  * @command: the command
  * @argv: argument

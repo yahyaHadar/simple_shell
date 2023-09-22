@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * _getpath - gets path string
+ * _getpath - gets the path string
  *
- * @command: array of strings
+ * @command: the array of strings
  *
  * Return: the value
 */
