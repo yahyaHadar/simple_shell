@@ -2,47 +2,41 @@
 
 
 /**
- * noha_main - entry point
+ * main - entry point
  *
  * @argc: argument count
  * @argv: argument vector
  *
- * Reurn: success means 0 or 1 on error
+ * Return: success means 0 or 1 on error
 */
 
-int noha_main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	noha_info_t info[] = NOHA_INFO_INIT;
-	int file_descriptor = 2;
+	char *line = NULL;
+	char **command = NULL;
+	int status = 0, idx = 0;
+	(void) argc;
 
-
-	asm ("mov %1, %0\n\t"
-		"add $3, %0"
-		: "=r" (file_descriptor)
-		: "r" (file_descriptor));
-
-	if (argc == 2)
+	while (1)
 	{
-		file_descriptor = open(argv[1], O_RDONLY);
-		if (file_descriptor == -1)
+		line = read_line();
+		if (line == NULL)
 		{
-			if (errno == EACCES)
-				exit(126);
-			if (errno == ENOENT)
-			{
-				noha_eputs(argv[0]);
-				noha_eputs(": 0: this file can't open ");
-				noha_eputs(argv[1]);
-				noha_eputchar('\n');
-				noha_eputchar(NOHA_BUF_FLUSH);
-				exit(127);
-			}
-			return (EXIT_FAILURE);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n ", 1);
+			return (status);
 		}
-		info->readfd = file_descriptor;
+		idx++;
+
+		command = tokenizer(line);
+		if (!command)
+			continue;
+
+		if (is_builtin(command[0]))
+			handle_builtin(command, argv, &status, idx);
+
+		else
+			status = _execute(command, argv, idx);
 	}
-	populate_env_list(info);
-	read_history(info);
-	noha_shell(info, argv);
-	return (EXIT_SUCCESS);
+
 }
