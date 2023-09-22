@@ -1,105 +1,94 @@
 #include "shell.h"
-
 /**
- * is_builtin - where the function is built
- *
- * @command: the command
- *
- * Return: if succses 1 if not 0
-*/
-
-int is_builtin(char *command)
+ * _myexit - exits the shell
+ * @info: Structure containing potential arguments. Used to maintain
+ * constant function prototype.
+ * Return: exits with a given exit status
+ * (0) if info.argv[0] != "exit"
+ */
+int _myexit(info_t *info)
 {
-	char *builtins[] = {
-		"exit", "env", "setenv", "cd", NULL
-	};
-	int i;
+	int exitcheck;
 
-	for (i = 0; builtins[i]; i++)
+	if (info->argv[1]) /* If there is an exit arguement */
 	{
-		if (_strcmp(command, builtins[i]) == 0)
+		exitcheck = _erratoi(info->argv[1]);
+		if (exitcheck == -1)
+		{
+			info->status = 2;
+			print_error(info, "Illegal number: ");
+			_eputs(info->argv[1]);
+			_eputchar('\n');
 			return (1);
+		}
+		info->err_num = _erratoi(info->argv[1]);
+		return (-2);
+	}
+	info->err_num = -1;
+	return (-2);
+}
+/**
+ * _mycd - changes the current directory of the process
+ * @info: Structure containing potential arguments. Used to maintain
+ * constant function prototype.
+ * Return: Always 0
+ */
+int _mycd(info_t *info)
+{
+	char *s, *dir, buffer[1024];
+	int chdir_ret;
+
+	s = getcwd(buffer, 1024);
+	if (!s)
+		_puts("TODO: >>getcwd failure emsg here<<\n");
+	if (!info->argv[1])
+	{
+		dir = _getenv(info, "HOME=");
+		if (!dir)
+			chdir_ret = /* TODO: what should this be? */
+				chdir((dir = _getenv(info, "PWD=")) ? dir : "/");
+		else
+			chdir_ret = chdir(dir);
+	}
+	else if (_strcmp(info->argv[1], "-") == 0)
+	{
+		if (!_getenv(info, "OLDPWD="))
+		{
+			_puts(s);
+			_putchar('\n');
+			return (1);
+		}
+		_puts(_getenv(info, "OLDPWD=")), _putchar('\n');
+		chdir_ret = /* TODO: what should this be? */
+			chdir((dir = _getenv(info, "OLDPWD=")) ? dir : "/");
+	}
+	else
+		chdir_ret = chdir(info->argv[1]);
+	if (chdir_ret == -1)
+	{
+		print_error(info, "can't cd to ");
+		_eputs(info->argv[1]), _eputchar('\n');
+	}
+	else
+	{
+		_setenv(info, "OLDPWD", _getenv(info, "PWD="));
+		_setenv(info, "PWD", getcwd(buffer, 1024));
 	}
 	return (0);
 }
-
 /**
- * handle_builtin - a function to handle the builting
- *
- * @command: the command
- * @argv: argument
- * @status: pointur
- * @idx: index
-*/
-
-void handle_builtin(char **command, char **argv, int *status, int idx)
+ * _myhelp - changes the current directory of the process
+ * @info: Structure containing potential arguments. Used to maintain
+ * constant function prototype.
+ * Return: Always 0
+ */
+int _myhelp(info_t *info)
 {
-	if (_strcmp(command[0], "exit") == 0)
-		exit_shell(command, argv, status, idx);
+	char **arg_array;
 
-	else if (_strcmp(command[0], "env") == 0)
-		print_env(command, status);
-}
-
-/**
- * exit_shell - exit shell
- *
- * @command: the command
- * @argv: argument
- * @status: pointur
- * @idx: index
- *
- * Return: exit if status is 0
-*/
-
-void exit_shell(char **command, char **argv, int *status, int idx)
-{
-	int exit_value = (*status);
-	char *index, msg[] = ": exit: the number is illegal: ";
-
-	if (command[1])
-	{
-		if (is_positive_number(command[1]))
-		{
-			exit_value = _atoi(command[1]);
-		}
-		else
-		{
-			index = _itoa(idx);
-			write(STDERR_FILENO, argv[0], _strlen(argv[0]));
-			write(STDERR_FILENO, ": ", 2);
-			write(STDERR_FILENO, index, _strlen(index));
-			write(STDERR_FILENO, msg, _strlen(msg));
-			write(STDERR_FILENO, command[1], _strlen(command[1]));
-			write(STDERR_FILENO, "\n", 1);
-			free(index);
-			freearay(command);
-			(*status) = 2;
-			return;
-		}
-	}
-	freearay(command);
-	exit(exit_value);
-}
-
-/**
- * print_env - printer of env
- *
- * @command: the command
- * @status: pointur
-*/
-
-void print_env(char **command, int *status)
-{
-	int i;
-	(void) status;
-
-
-	for (i = 0; environ[i]; i++)
-	{
-		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
-		write(STDOUT_FILENO, "\n", 1);
-	}
-	freearay(command);
-	(*status) = 0;
+	arg_array = info->argv;
+	_puts("help call works. Function not yet implemented \n");
+	if (0)
+		_puts(*arg_array); /* temp att_unused workaround */
+	return (0);
 }
